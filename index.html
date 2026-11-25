@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林佳麒｜Go找房｜北市中山區房仲・住商不動產</title>
+  <meta name="description" content="北市中山區房仲｜林佳麒（小C）。幫你找房、看房、談到好價格，提供房貸試算與租金扣繳稅金試算服務。">
+  <style>
+    :root {
+      --primary: #006837;
+      --primary-light: #e8f3ed;
+      --accent-green: #73ae43;
+      --accent-green-hover: #629936;
+      --bg: #f6f8f7;
+      --card: #ffffff;
+      --text: #222222;
+      --muted: #555555;
+      --border: #dce5df;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 20px 16px;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 28px 22px 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      height: fit-content;
+    }
+    /* 頂部操作列 */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 4px;
+    }
+    .share-btn {
+      background: #f0f5f2;
+      color: var(--primary);
+      border: 1px solid #cce3d5;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+    .share-btn:hover {
+      background: #e1eee7;
+    }
+    /* 大頭貼區塊 */
+    .avatar-wrap {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #006837, #73ae43);
+      box-shadow: 0 4px 12px rgba(0, 104, 55, 0.18);
+    }
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #006837;
+      display: block;
+    }
+    /* 標題與自我介紹 */
+    h1 {
+      margin: 0 0 8px;
+      font-size: 21px;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.5px;
+    }
+    .bio {
+      margin: 0 0 18px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .bio strong {
+      color: var(--primary);
+      font-weight: 700;
+    }
+    /* 社群圖示列 */
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .social-link {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f2f7f4;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid #e0ece5;
+    }
+    .social-link:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+    .social-link svg {
+      width: 19px;
+      height: 19px;
+      fill: currentColor;
+    }
+    /* 聯絡按鈕區（白底綠框） */
+    .contact-group {
+      display: grid;
+      gap: 12px;
+    }
+    .outline-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      padding: 13px 16px;
+      background: #ffffff;
+      color: var(--primary);
+      border: 1.5px solid #8fc174;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    .outline-btn:hover {
+      background: #f4faf1;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .outline-btn .icon-badge {
+      position: absolute;
+      left: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-phone {
+      background: #eef6f1;
+      color: var(--primary);
+    }
+    .icon-line {
+      background: #06c755;
+      color: #ffffff;
+    }
+    /* 分隔線 */
+    .divider {
+      height: 3px;
+      background: var(--accent-green);
+      border-radius: 2px;
+      margin: 18px 0;
+      opacity: 0.85;
+    }
+    /* 工具與物件按鈕區（綠底白字） */
+    .tool-group {
+      display: grid;
+      gap: 12px;
+    }
+    .solid-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--accent-green);
+      color: #ffffff;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 3px 10px rgba(115, 174, 67, 0.22);
+    }
+    .solid-btn:hover {
+      background: var(--accent-green-hover);
+      transform: translateY(-1px);
+    }
+    .solid-btn .btn-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .solid-btn .btn-sub {
+      font-size: 11.5px;
+      opacity: 0.92;
+      margin-top: 2px;
+    }
+    .solid-btn.secondary {
+      background: var(--primary);
+      box-shadow: 0 3px 10px rgba(0, 104, 55, 0.2);
+    }
+    .solid-btn.secondary:hover {
+      background: #00522b;
+    }
+    /* 底部版權 */
+    .footer {
+      margin-top: 24px;
+      font-size: 11.5px;
+      color: #888;
+      line-height: 1.5;
+    }
+    /* 複製成功提示框 */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(34, 34, 34, 0.9);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <button type="button" class="share-btn" onclick="sharePage()">🔗 分享名片</button>
+    </div>
+
+    <!-- 大頭貼：上傳圖片並命名為 avatar.jpg 即可自動顯示；若尚未上傳會自動顯示住商綠底 CC 縮寫 -->
+    <a href="https://www.myhousingex.com.tw/agents/8LXXWRGR" target="_blank" rel="noopener" style="text-decoration:none;">
+      <div class="avatar-wrap">
+        <img src="avatar.jpg" alt="林佳麒｜Go找房" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23006837%22/><text x=%2250%22 y=%2258%22 font-family=%22sans-serif%22 font-size=%2234%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22>CC</text></svg>';">
+      </div>
+    </a>
+
+    <h1>林佳麒｜Go找房</h1>
+    <p class="bio">
+      <strong>北市中山區房仲｜住商不動產 建國民生加盟店</strong><br>
+      幫你找房、看房、談到好價格<br>
+      買房這件事，交給我更簡單
+    </p>
+
+    <!-- 四大社群平台連結 -->
+    <div class="socials">
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/cclin_realty" target="_blank" rel="noopener" class="social-link" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/cclin.realty" target="_blank" rel="noopener" class="social-link" aria-label="Facebook" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+      </a>
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@cclin_realty" target="_blank" rel="noopener" class="social-link" aria-label="YouTube" title="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+      <!-- 方格子 Vocus 專欄 -->
+      <a href="https://vocus.cc/salon/cclin_realty" target="_blank" rel="noopener" class="social-link" aria-label="方格子房產稅務專欄" title="方格子房產稅務專欄">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      </a>
+    </div>
+
+    <!-- 聯絡方式按鈕 -->
+    <div class="contact-group">
+      <a href="https://ekls9521436.github.io/call/" class="outline-btn">
+        <span class="icon-badge icon-phone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.07 21 3 13.93 3 5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+        </span>
+        0968-783-477
+      </a>
+
+      <a href="https://line.me/ti/p/%40745lpuie" target="_blank" rel="noopener" class="outline-btn">
+        <span class="icon-badge icon-line">
+          <span style="font-size:10px; font-weight:900; letter-spacing:-0.5px;">LINE</span>
+        </span>
+        LINE 即時回覆
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 小工具與物件專頁 -->
+    <div class="tool-group">
+      <a href="https://ekls9521436.github.io/rent-tax/" class="solid-btn">
+        <span class="btn-title">租金扣繳與稅金計算機</span>
+        <span class="btn-sub">便捷小工具</span>
+      </a>
+
+      <a href="https://ekls9521436.github.io/loan/" class="solid-btn">
+        <span class="btn-title">房貸月付金即時試算表</span>
+        <span class="btn-sub">便捷小工具</span>
+      </a>
+
+      <a href="https://www.myhousingex.com.tw/agents/8LXXWRGR" target="_blank" rel="noopener" class="solid-btn secondary">
+        <span class="btn-title">精選在售物件與服務專頁</span>
+        <span class="btn-sub">住商不動產 建國民生加盟店</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      台北市中山區建國北路二段107號<br>
+      © 林佳麒 C.C.LIN All Rights Reserved.
+    </div>
+  </div>
+
+  <div class="toast" id="toast">已複製名片網址，可直接貼上分享！</div>
+
+  <script>
+    function sharePage() {
+      var url = window.location.href;
+      if (navigator.share) {
+        navigator.share({
+          title: '林佳麒｜Go找房｜北市中山區房仲',
+          text: '買房、賣房、房貸與租金稅金試算，歡迎聯繫林佳麒（小C）',
+          url: url
+        }).catch(function(){});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+          var t = document.getElementById('toast');
+          t.classList.add('show');
+          setTimeout(function() { t.classList.remove('show'); }, 2500);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
